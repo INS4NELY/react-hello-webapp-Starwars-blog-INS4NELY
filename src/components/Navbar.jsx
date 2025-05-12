@@ -8,9 +8,9 @@ export const Navbar = () => {
   const toggleSidebar = () => setOpen(!open);
   const location = useLocation();
 
-  useEffect(()=> {
-    setOpen(false)
-  },[location.pathname])
+  useEffect(() => {
+    setOpen(false);
+  }, [location.pathname]);
 
   const removeFavorite = (link, item) => {
     dispatch({
@@ -30,9 +30,18 @@ export const Navbar = () => {
           />
         </Link>
         <div className="d-flex">
-          <button className="btn btn-warning m-3" onClick={toggleSidebar}>
-            Favorite Star Wars
-          </button>
+          <div className="d-flex align-items-center btn btn-warning m-3">
+            <button className=" btnStyle " onClick={toggleSidebar}>
+              Favorite Star Wars
+            </button>
+            {store.Favorites.results.length > 0 ? (
+              <p className=" my-0 ms-2 px-2 rounded-circle bg-white">
+                {store.Favorites.results.length}
+              </p>
+            ) : (
+              ""
+            )}
+          </div>
           <div
             className={`bg-dark text-white p-3 position-fixed top-0 end-0 h-100 transition ${
               open ? "translate-x-0" : "translate-x-minus"
@@ -50,15 +59,22 @@ export const Navbar = () => {
             <h4 className="text-center"> Favorite Star Wars</h4>
             {store.Favorites.results?.length > 0 &&
               store.Favorites.results.map((item) => (
-                <div className="d-flex justify-content-between align-items-center mx-5 mt-3" key={item.item._id}>
-                  <Link to={item.link} className="fs-5 text-decoration-none textLink">{item.item.properties.name}</Link>
+                <div
+                  className="d-flex justify-content-between align-items-center mx-5 mt-3"
+                  key={item.item._id}
+                >
+                  <Link
+                    to={item.link}
+                    className="fs-5 text-decoration-none textLink"
+                  >
+                    {item.item.properties.name}
+                  </Link>
                   <button
                     className="btnStyle"
                     onClick={() => {
                       removeFavorite(item.link, item.item);
                     }}
                   >
-                    
                     <i className="ri-delete-bin-line fs-5"></i>
                   </button>
                 </div>

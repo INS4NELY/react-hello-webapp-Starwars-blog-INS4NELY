@@ -3,17 +3,21 @@ import { Link } from "react-router-dom";
 
 export const Home = () => {
   const { store, dispatch } = useGlobalReducer();
-  console.log(store);
 
   const addFavorite = (link, item) => {
-    if (link !== store.favorite) {
-      dispatch({
-        type: "favorite",
-        payload: { link: link, item: item },
-      });
-    }
+    dispatch({
+      type: "favorite",
+      payload: { link: link, item: item },
+    });
   };
-  
+
+  const removeFavorite = (link, item) => {
+    dispatch({
+      type: "removeFavorite",
+      payload: { link: link, item: item },
+    });
+  };
+
   return (
     <div>
       <div className="mx-5 my-5">
@@ -51,10 +55,20 @@ export const Home = () => {
                     <button
                       className="btnStyle "
                       onClick={() => {
-                        addFavorite(`/people/${item.uid}`, item);
+                        store.Favorites.results.find(
+                          (fav) => fav.link === `/people/${item.uid}`
+                        )
+                          ? removeFavorite(`/people/${item.uid}`, item.item)
+                          : addFavorite(`/people/${item.uid}`, item);
                       }}
                     >
-                      <i className="ri-star-line text-warning fs-4"></i>
+                      {store.Favorites.results.find(
+                        (fav) => fav.link === `/people/${item.uid}`
+                      ) ? (
+                        <i className="ri-star-fill text-warning fs-4"></i>
+                      ) : (
+                        <i className="ri-star-line text-warning fs-4"></i>
+                      )}
                     </button>
                   </div>
                 </div>
@@ -95,14 +109,24 @@ export const Home = () => {
                       >
                         More Information
                       </Link>
-                    <button
-                      className="btnStyle "
-                      onClick={() => {
-                        addFavorite(`/planet/${item.uid}`, item);
-                      }}
-                    >
-                      <i className="ri-star-line text-warning fs-4"></i>
-                    </button>
+                      <button
+                        className="btnStyle "
+                        onClick={() => {
+                          store.Favorites.results.find(
+                            (fav) => fav.link === `/planet/${item.uid}`
+                          )
+                            ? removeFavorite(`/planet/${item.uid}`, item.item)
+                            : addFavorite(`/planet/${item.uid}`, item);
+                        }}
+                      >
+                        {store.Favorites.results.find(
+                          (fav) => fav.link === `/planet/${item.uid}`
+                        ) ? (
+                          <i className="ri-star-fill text-warning fs-4"></i>
+                        ) : (
+                          <i className="ri-star-line text-warning fs-4"></i>
+                        )}
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -144,14 +168,24 @@ export const Home = () => {
                       >
                         More Information
                       </Link>
-                    <button
-                      className="btnStyle "
-                      onClick={() => {
-                        addFavorite(`/vehicle/${item.uid}`, item);
-                      }}
-                    >
-                      <i className="ri-star-line text-warning fs-4"></i>
-                    </button>
+                      <button
+                        className="btnStyle "
+                        onClick={() => {
+                          store.Favorites.results.find(
+                            (fav) => fav.link === `/vehicle/${item.uid}`
+                          )
+                            ? removeFavorite(`/vehicle/${item.uid}`, item.item)
+                            : addFavorite(`/vehicle/${item.uid}`, item);
+                        }}
+                      >
+                        {store.Favorites.results.find(
+                          (fav) => fav.link === `/vehicle/${item.uid}`
+                        ) ? (
+                          <i className="ri-star-fill text-warning fs-4"></i>
+                        ) : (
+                          <i className="ri-star-line text-warning fs-4"></i>
+                        )}
+                      </button>
                     </div>
                   </div>
                 </div>

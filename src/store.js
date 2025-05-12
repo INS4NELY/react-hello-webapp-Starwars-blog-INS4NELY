@@ -14,6 +14,8 @@ export default function storeReducer(store, action = {}) {
     case "vehicles":
       return { ...store, Vehicles: action.payload };
     case "favorite":
+      const exist = store.Favorites.results.some((item)=> item.link === action.payload.link)
+        if (exist) return store
       return {
         ...store,
         Favorites: {
