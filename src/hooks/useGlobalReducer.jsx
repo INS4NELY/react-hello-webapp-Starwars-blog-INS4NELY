@@ -1,24 +1,93 @@
-// Import necessary hooks and functions from React.
-import { useContext, useReducer, createContext } from "react";
-import storeReducer, { initialStore } from "../store"  // Import the reducer and the initial state.
+import { useContext, useReducer, createContext, useEffect } from "react";
+import storeReducer, { initialState } from "../store"
 
-// Create a context to hold the global state of the application
-// We will call this global state the "store" to avoid confusion while using local states
 const StoreContext = createContext()
 
-// Define a provider component that encapsulates the store and warps it in a context provider to 
-// broadcast the information throught all the app pages and components.
 export function StoreProvider({ children }) {
-    // Initialize reducer with the initial state.
-    const [store, dispatch] = useReducer(storeReducer, initialStore())
-    // Provide the store and dispatch method to all child components.
+    const [store, dispatch] = useReducer(storeReducer, initialState)
+    useEffect(() => {
+        (async () => {
+            try {
+                {
+                    const response = await fetch('https://www.swapi.tech/api/people/', {
+                        method: 'GET',
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
+                    }
+                    )
+
+                    const data = await response.json()
+                    const detailed = await Promise.all(
+                        data.results.map(async (person) => {
+                            const res = await fetch(`https://www.swapi.tech/api/people/${person.uid}`);
+                            const detail = await res.json();
+                            return detail.result;
+                        })
+                    );
+
+                    dispatch({
+                        type: 'people', payload: { results: detailed }
+                    })
+
+                }
+                {
+                    const response = await fetch('https://www.swapi.tech/api/planets/', {
+                        method: 'GET',
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
+                    }
+                    )
+                    const data = await response.json()
+                    const detailed = await Promise.all(
+                        data.results.map(async (planet) => {
+                            const res = await fetch(`https://www.swapi.tech/api/planets/${planet.uid}`);
+                            const detail = await res.json();
+                            return detail.result;
+                        })
+                    );
+
+                    dispatch({
+                        type: 'planets', payload: { results: detailed }
+                    })
+
+                }
+                {
+                    const response = await fetch('https://www.swapi.tech/api/vehicles/', {
+                        method: 'GET',
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
+                    }
+                    )
+
+                    const data = await response.json()
+                    const detailed = await Promise.all(
+                        data.results.map(async (vehicle) => {
+                            const res = await fetch(`https://www.swapi.tech/api/vehicles/${vehicle.uid}`);
+                            const detail = await res.json();
+                            return detail.result;
+                        })
+                    );
+
+                    dispatch({
+                        type: 'vehicles', payload: { results: detailed }
+                    })
+
+                }
+            } catch (error) {
+                console.log(error);
+
+            }
+        })()
+    }, [dispatch])
+
     return <StoreContext.Provider value={{ store, dispatch }}>
         {children}
     </StoreContext.Provider>
 }
 
-// Custom hook to access the global state and dispatch function.
 export default function useGlobalReducer() {
-    const { dispatch, store } = useContext(StoreContext)
-    return { dispatch, store };
+    return useContext(StoreContext)
 }

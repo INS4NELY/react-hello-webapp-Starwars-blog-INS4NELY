@@ -1,0 +1,43 @@
+.imgSW{
+    width: 5rem;
+}
+
+.cardStyle {
+    width: 25rem;
+ overflow: hidden;
+}
+
+.imgStyle {
+    width: 100%;
+    height: 10rem;
+    object-fit: cover;
+}
+
+.btnStyle{
+    all: unset;
+}
+
+.imgDesc {
+    width: 90%;
+    height: 80%;
+    object-fit: cover;
+}
+
+.navStyle {
+    width: "250px";
+    z-index: auto;;
+    transition: "transform 0.3s ease";
+    
+}
+
+.textLink {
+    color: white;
+}
+
+.textLink:hover {
+    color:gray
+}
+
+.ri-delete-bin-line:hover {
+    color:gray
+}
