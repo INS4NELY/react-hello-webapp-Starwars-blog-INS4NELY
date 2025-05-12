@@ -13,6 +13,7 @@ export const Home = () => {
       });
     }
   };
+  
   return (
     <div>
       <div className="mx-5 my-5">

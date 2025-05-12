@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 import { useParams } from "react-router-dom";
-import { useState } from "react";
 
 export const Vehicles = () => {
   const { store } = useGlobalReducer();
